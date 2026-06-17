@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bite Craft 🍽️ — Smart Meal Recommender</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+</head>
+<body>
+
+<!-- ══ NAVBAR ══════════════════════════════════════════════════════════════ -->
+<nav class="navbar">
+  <div class="nav-brand">🍽️ Bite Craft</div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="showSection('home')">Home</button>
+    <button class="nav-btn" onclick="showSection('browse')">Browse</button>
+    <button class="nav-btn" onclick="showSection('recommend')">Get Recs</button>
+  </div>
+  <div class="cart-icon" onclick="toggleCart()">
+    🛒 <span class="cart-badge" id="cart-count">0</span>
+  </div>
+</nav>
+
+<!-- ══ HERO ════════════════════════════════════════════════════════════════ -->
+<section id="home" class="section active">
+  <div class="hero">
+    <div class="hero-text">
+      <h1>Right Meal, Right Time</h1>
+      <p>AI-powered meal recommendations for Breakfast, Lunch, Hi-Tea & Dinner</p>
+      <div class="meal-time-badges" id="meal-badges">
+        <span class="badge breakfast">🌅 Breakfast</span>
+        <span class="badge lunch">☀️ Lunch</span>
+        <span class="badge hitea">☕ Hi-Tea</span>
+        <span class="badge dinner">🌙 Dinner</span>
+      </div>
+      <button class="btn-primary" onclick="showSection('recommend')">Get Recommendations ✨</button>
+    </div>
+    <div class="hero-visual">
+      <div class="rotating-food">🍛</div>
+    </div>
+  </div>
+
+  <!-- Meal Time Cards -->
+  <div class="meal-cards-section">
+    <h2 class="section-title">Explore by Meal Time</h2>
+    <div class="meal-cards">
+      <div class="meal-card breakfast-card" onclick="quickBrowse('Breakfast')">
+        <div class="meal-card-icon">🌅</div>
+        <h3>Breakfast</h3>
+        <p>Paratha, Halwa Puri, Smoothie Bowl & more</p>
+        <span class="meal-time-tag">5 AM – 11 AM</span>
+      </div>
+      <div class="meal-card lunch-card" onclick="quickBrowse('Lunch')">
+        <div class="meal-card-icon">☀️</div>
+        <h3>Lunch</h3>
+        <p>Biryani, Karahi, Burgers & more</p>
+        <span class="meal-time-tag">11 AM – 4 PM</span>
+      </div>
+      <div class="meal-card hitea-card" onclick="quickBrowse('Hi-Tea')">
+        <div class="meal-card-icon">☕</div>
+        <h3>Hi-Tea</h3>
+        <p>Samosa, Pastry, Sandwiches & more</p>
+        <span class="meal-time-tag">4 PM – 8 PM</span>
+      </div>
+      <div class="meal-card dinner-card" onclick="quickBrowse('Dinner')">
+        <div class="meal-card-icon">🌙</div>
+        <h3>Dinner</h3>
+        <p>Tikka, Steak, Biryani & more</p>
+        <span class="meal-time-tag">8 PM – 12 AM</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ BROWSE ══════════════════════════════════════════════════════════════ -->
+<section id="browse" class="section">
+  <div class="container">
+    <h2 class="section-title">Browse Menu</h2>
+    <div class="meal-filter-tabs">
+      <button class="filter-tab active" onclick="filterMeal('All', this)">All 🍽️</button>
+      <button class="filter-tab" onclick="filterMeal('Breakfast', this)">🌅 Breakfast</button>
+      <button class="filter-tab" onclick="filterMeal('Lunch', this)">☀️ Lunch</button>
+      <button class="filter-tab" onclick="filterMeal('Hi-Tea', this)">☕ Hi-Tea</button>
+      <button class="filter-tab" onclick="filterMeal('Dinner', this)">🌙 Dinner</button>
+    </div>
+    <div class="items-grid" id="browse-grid"></div>
+  </div>
+</section>
+
+<!-- ══ RECOMMEND ═══════════════════════════════════════════════════════════ -->
+<section id="recommend" class="section">
+  <div class="container">
+    <h2 class="section-title">AI Meal Recommender</h2>
+
+    <div class="rec-form-card">
+      <div class="form-row">
+        <!-- Meal Time -->
+        <div class="form-group">
+          <label>Meal Time 🕐</label>
+          <div class="chip-group" id="meal-chips">
+            <button class="chip" data-val="Breakfast" onclick="selectChip(this,'meal')">🌅 Breakfast</button>
+            <button class="chip" data-val="Lunch"     onclick="selectChip(this,'meal')">☀️ Lunch</button>
+            <button class="chip active" data-val="Hi-Tea"    onclick="selectChip(this,'meal')">☕ Hi-Tea</button>
+            <button class="chip" data-val="Dinner"    onclick="selectChip(this,'meal')">🌙 Dinner</button>
+          </div>
+        </div>
+        <!-- Mood -->
+        <div class="form-group">
+          <label>Mood 😊</label>
+          <div class="chip-group" id="mood-chips">
+            <button class="chip active" data-val="happy"   onclick="selectChip(this,'mood')">😄 Happy</button>
+            <button class="chip" data-val="sad"     onclick="selectChip(this,'mood')">😢 Sad</button>
+            <button class="chip" data-val="tired"   onclick="selectChip(this,'mood')">😴 Tired</button>
+            <button class="chip" data-val="excited" onclick="selectChip(this,'mood')">🤩 Excited</button>
+            <button class="chip" data-val="hungry"  onclick="selectChip(this,'mood')">🤤 Hungry</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <!-- Preference -->
+        <div class="form-group">
+          <label>Taste Preference 👅</label>
+          <div class="chip-group" id="pref-chips">
+            <button class="chip active" data-val="spicy"   onclick="selectChip(this,'pref')">🌶️ Spicy</button>
+            <button class="chip" data-val="sweet"   onclick="selectChip(this,'pref')">🍬 Sweet</button>
+            <button class="chip" data-val="light"   onclick="selectChip(this,'pref')">🥗 Light</button>
+            <button class="chip" data-val="heavy"   onclick="selectChip(this,'pref')">🍖 Heavy</button>
+            <button class="chip" data-val="grilled" onclick="selectChip(this,'pref')">🔥 Grilled</button>
+            <button class="chip" data-val="fast"    onclick="selectChip(this,'pref')">⚡ Fast Food</button>
+          </div>
+        </div>
+        <!-- Hunger -->
+        <div class="form-group">
+          <label>Hunger Level 🔥</label>
+          <div class="chip-group" id="hunger-chips">
+            <button class="chip" data-val="low"    onclick="selectChip(this,'hunger')">😌 Light Peckish</button>
+            <button class="chip active" data-val="medium" onclick="selectChip(this,'hunger')">😊 Moderate</button>
+            <button class="chip" data-val="high"   onclick="selectChip(this,'hunger')">🤤 Starving</button>
+          </div>
+        </div>
+      </div>
+      <button class="btn-primary full-width" onclick="getRecommendations()">
+        🤖 Get AI Recommendations
+      </button>
+    </div>
+
+    <!-- Result Panel -->
+    <div id="rec-result" class="rec-result hidden">
+      <div class="result-header">
+        <div class="result-meta">
+          <span class="segment-badge" id="seg-label"></span>
+          <span class="meal-badge" id="meal-label"></span>
+          <span class="cat-badge" id="cat-label"></span>
+        </div>
+        <p class="mood-msg" id="mood-msg"></p>
+        <p class="meal-msg" id="meal-msg"></p>
+      </div>
+      <h3>Recommended For You</h3>
+      <div class="items-grid" id="rec-grid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CART DRAWER ══════════════════════════════════════════════════════════ -->
+<div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-header">
+    <h3>🛒 Your Order</h3>
+    <button onclick="toggleCart()">✕</button>
+  </div>
+  <div id="cart-items" class="cart-items-list"></div>
+  <div class="cart-footer">
+    <div class="cart-total">Total: Rs. <span id="cart-total">0</span></div>
+    <button class="btn-primary" onclick="placeOrder()">Place Order 🎉</button>
+    <button class="btn-ghost" onclick="clearCart()">Clear Cart</button>
+  </div>
+</div>
+
+<!-- ══ ITEM MODAL ══════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
+<div class="item-modal" id="item-modal">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <div id="modal-content"></div>
+</div>
+
+<!-- ══ TOAST ═══════════════════════════════════════════════════════════════ -->
+<div id="toast" class="toast"></div>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>
